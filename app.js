@@ -23,15 +23,33 @@ const displayCategoryBtn = (allCategoryBtn) => {
 }
 
 // display the news cards on body
-const handleCategoryNews = async(id = '01') => {
+const handleCategoryNews = async(id, isTreading) => {
     const res = await fetch(`https://openapi.programming-hero.com/api/news/category/${id}`);
     const {data} = await res.json();
-    displayCategoryNews(data);
+
+    if(!isTreading) {
+        displayCategoryNews(data);
+    }
+    else {
+        sortTreadingNews(data);
+    }
 }
+
+// const sortTreadingNews = (allNews) => { console.log(allNews);
+//     const treadingNews = allNews.filter((news) => news.others_info.is_trending === true);
+//     displayCategoryNews(treadingNews);
+// }
+
+// const treading = () => { 
+//     const id = '08';
+//     const isTreading = true;
+//     handleCategoryNews(id, isTreading);
+// }
 
 const displayCategoryNews = (newsCards) => {
     newsCardContainer.innerHTML = '';
-    newsCards.forEach((card) => {
+    newsCards.forEach((card) => { 
+        const cardDetails = card.details.slice(0, 200);
         const newCard = document.createElement('div');
         newCard.classList = `card lg:card-side bg-base-100 shadow-xl h-[400px]`;
         newCard.innerHTML = `
@@ -44,7 +62,7 @@ const displayCategoryNews = (newsCards) => {
                         <h5 class="text-lg font-medium">${card?.rating?.badge || ''}</h5>
                     </div>
                   </div>
-                  <p class="font-semibold">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore quasi architecto sint eveniet tempora minima eos ipsum iure magni temporibus error, vitae aut sed molestias dolores quis ad consequuntur dolorem.</p>
+                  <p class="font-medium opacity-70">${cardDetails} ...</p>
                   <div class="flex justify-between items-center mt-16">
                     <!-- left container -->
                     <div class="flex items-center gap-3">
@@ -68,10 +86,19 @@ const displayCategoryNews = (newsCards) => {
     });
 }
 
-const showNewsDetails = (id) => {
-    console.log(id);
-}
+//click the search btn function
+searchBtn.addEventListener('click', () => {
+    const searchInputText = searchInput.value;
+    const idArray = ['01', '02', '03', '04', '05', '06', '07', '08'];
+    searchInput.value = '';
+    if(searchInputText.trim() === '' || !idArray.includes(searchInputText)) {
+        alert("Enter a valid category between 01 to 08!");
+    }
+    else {
+        handleCategoryNews(searchInputText);
+    }
+});
 
-handleCategoryNews();
+handleCategoryNews('01');
 
 handleNavCategoryBtn();
