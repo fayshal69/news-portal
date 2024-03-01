@@ -18,11 +18,16 @@
         </nav>
     </header>
 
-    <main class="container mx-auto px-24 mb-24">
+    <main class="container mx-auto px-24 mb-24 relative">
         <!-- search container -->
         <div class="mb-10 flex gap-6 w-[80%] mx-auto">
             <input id="search-input" type="text" placeholder="Type here news category" class="input input-bordered input-info flex-1" />
             <button id="search-btn" class="btn btn-outline btn-accent">Search</button>
+        </div>
+
+        <!-- loading image container -->
+        <div class="absolute z-10 top-32 left-1/2 -translate-x-1/2 hidden" id="loading-spiner">
+            <img src="ZZ5H.gif" class="inline">
         </div>
 
         <!-- news card container -->

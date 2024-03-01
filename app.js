@@ -2,6 +2,7 @@ const navBar = document.getElementById('nav-bar');
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
 const newsCardContainer = document.getElementById('news-card-container');
+const loadingSpiner = document.getElementById('loading-spiner');
 
 
 
@@ -24,6 +25,7 @@ const displayCategoryBtn = (allCategoryBtn) => {
 
 // display the news cards on body
 const handleCategoryNews = async(id, isTreading) => {
+    showLoadingSpiner(true);
     const res = await fetch(`https://openapi.programming-hero.com/api/news/category/${id}`);
     const {data} = await res.json();
 
@@ -84,6 +86,7 @@ const displayCategoryNews = (newsCards) => {
         `;
         newsCardContainer.appendChild(newCard);
     });
+    showLoadingSpiner(false);
 }
 
 //click the search btn function
@@ -99,6 +102,19 @@ searchBtn.addEventListener('click', () => {
     }
 });
 
+
+const showLoadingSpiner = (isShow) => {
+    if(isShow) {
+        loadingSpiner.classList.remove('hidden');
+    }
+    else {
+        loadingSpiner.classList.add('hidden');
+    }
+}
+
+
+//news cards calling function with default id
 handleCategoryNews('01');
 
+//category btn showing function
 handleNavCategoryBtn();
